@@ -1,0 +1,14 @@
+Package: DataProfiler
+Title: Data Profiling and Exploratory Data Analysis
+Version: 0.0.0.9000
+Authors@R: 
+    person("Gurparvez", "Singh", "gurparvez04@gmail.com", role = c("aut", "cre"))
+Description: DataProfiler is a package for performing data profiling and exploratory data analysis 
+    on data frames in R. The package generates comprehensive markdown reports that include
+    descriptive statistics, distributions, correlations, missing value analysis, 
+    and more. It helps users quickly understand their dataset's structure and quality 
+    by summarizing and visualizing key information.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
