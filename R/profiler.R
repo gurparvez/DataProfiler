@@ -1,4 +1,5 @@
-source("R/statistics.R")
+source("R/overview/statistics.R")
+source("R/overview/variable_types.R")
 
 #' Profiler Function
 #'
@@ -92,16 +93,18 @@ profiler_dataframe <- function(data, output_file = "profiler_report.md") {
     stopifnot(is.character(output_file))
 
     # Overview Section:
+    cat("# Overview\n", file = output_file, append = TRUE)
     # 1. Dataset Statistics
     write_statistics(data, output_file)
 
     # 2. Variable Types
-    # write_variable_types(data, output_file)
+    write_variable_types(data, output_file)
 
-    # Variables
+    # Variables Section:
+    cat("\n# Variables\n", file = output_file, append = TRUE)
     # draw charts of all columns according to their data types
     # along with some statistics
-
+    # write_variables(data, output_file)
 }
 
 # print(profiler("data.csv"))

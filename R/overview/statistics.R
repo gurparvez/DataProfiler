@@ -1,3 +1,5 @@
+source("R/utils/write_table.R")
+
 #' Write Dataset Statistics to Markdown
 #'
 #' This function generates a markdown table containing statistics about a given dataset
@@ -32,19 +34,26 @@ write_statistics <- function(data, output_file = "profiler_report.md") {
     cat("\n## Dataset Statistics\n", file = output_file, append = TRUE)
 
     statistics <- .get_data_statistics(data)
+    formatted_data <- data.frame(
+        Statistic = rownames(t(statistics)),
+        Value = as.vector(t(statistics)),
+        row.names = NULL
+    )
+
+    write_table(data = formatted_data, output_file = output_file)
     
-    header <- "| Statistic                          | Value     |"
-    separator <- "|------------------------------------|-----------|"
+    # header <- "| Statistic                          | Value     |"
+    # separator <- "|------------------------------------|-----------|"
 
-    rows <- c()
-    for (i in seq_along(statistics)) {
-        statistic_name <- names(statistics)[i]
-        statistic_value <- statistics[i]
-        rows <- c(rows, paste0("| ", statistic_name, " | ", statistic_value, " |"))
-    }
+    # rows <- c()
+    # for (i in seq_along(statistics)) {
+    #     statistic_name <- names(statistics)[i]
+    #     statistic_value <- statistics[i]
+    #     rows <- c(rows, paste0("| ", statistic_name, " | ", statistic_value, " |"))
+    # }
 
-    table <- c(header, separator, rows)
-    cat(table, file = output_file, sep = "\n", append = TRUE)
+    # table <- c(header, separator, rows)
+    # cat(table, file = output_file, sep = "\n", append = TRUE)
 }
 
 
