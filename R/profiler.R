@@ -1,5 +1,6 @@
 source("R/overview/statistics.R")
 source("R/overview/variable_types.R")
+source("R/variables/variables.R")
 
 #' Profiler Function
 #'
@@ -104,7 +105,7 @@ profiler_dataframe <- function(data, output_file = "profiler_report.md") {
     cat("\n# Variables\n", file = output_file, append = TRUE)
     # draw charts of all columns according to their data types
     # along with some statistics
-    # write_variables(data, output_file)
+    write_variables(data, output_file)
 }
 
 # print(profiler("data.csv"))

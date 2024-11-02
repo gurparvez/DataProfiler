@@ -34,6 +34,7 @@ write_statistics <- function(data, output_file = "profiler_report.md") {
     cat("\n## Dataset Statistics\n", file = output_file, append = TRUE)
 
     statistics <- .get_data_statistics(data)
+    
     formatted_data <- data.frame(
         Statistic = rownames(t(statistics)),
         Value = as.vector(t(statistics)),
