@@ -1,4 +1,4 @@
-source("R/utils/write_table.R")
+source("R/write_table.R")
 
 #' Write Dataset Statistics to Markdown
 #'
@@ -41,7 +41,7 @@ write_statistics <- function(data, output_file = "profiler_report.md") {
         row.names = NULL
     )
 
-    write_table(data = formatted_data, output_file = output_file)
+    write_to_table(data = formatted_data, output_file = output_file)
     
     # header <- "| Statistic                          | Value     |"
     # separator <- "|------------------------------------|-----------|"
@@ -55,6 +55,82 @@ write_statistics <- function(data, output_file = "profiler_report.md") {
 
     # table <- c(header, separator, rows)
     # cat(table, file = output_file, sep = "\n", append = TRUE)
+}
+
+
+#' Write Variable Type Summary to Markdown Report
+#' 
+#' @description
+#' Analyzes and writes a summary of variable types in a data frame to a markdown file.
+#' The function counts and categorizes variables into numeric, categorical, and text types,
+#' then creates a detailed table showing the type of each variable.
+#' 
+#' @param data A data frame containing the variables to analyze
+#' @param output_file Character string specifying the output markdown file path.
+#'                    Defaults to "profiler_report.md"
+#' 
+#' @return NULL invisibly. The function writes results to the specified output file
+#'         as a side effect.
+#' 
+#' @details
+#' The function performs the following:
+#' 1. Counts the number of variables by type:
+#'    * Numeric (using is.numeric)
+#'    * Categorical (using is.factor)
+#'    * Text (using is.character)
+#' 2. Creates a summary showing counts for each type
+#' 3. Generates a detailed table showing the type of each variable
+#' 
+#' Input validation is performed using stopifnot() to ensure:
+#' * data is a data frame
+#' * output_file is a character string
+#' 
+#' @examples
+#' \dontrun{
+#' data <- data.frame(
+#'   age = c(25, 30, 35),
+#'   name = c("John", "Jane", "Bob"),
+#'   category = factor(c("A", "B", "A"))
+#' )
+#' write_variable_types(data, "my_report.md")
+#' }
+#' 
+#' @seealso 
+#' \code{\link{write_table}} for the underlying table writing functionality
+#' 
+#' @export
+write_variable_types <- function(data, output_file = "profiler_report.md") {
+    stopifnot(is.data.frame(data))
+    stopifnot(is.character(output_file))
+
+    cat("\n## Variable Types\n", file = output_file, append = TRUE)
+
+    # get numeric variables
+    numeric_vars <- sapply(data, is.numeric)
+    numeric_count <- sum(numeric_vars)
+    cat(paste0("Numeric: ", numeric_count, "  \n"), file = output_file, append = TRUE)
+
+    # get categorical variables
+    categorical_vars <- sapply(data, is.factor)
+    categorical_count <- sum(categorical_vars)
+    cat(paste0("Categorical: ", categorical_count, "  \n"), file = output_file, append = TRUE)
+
+    # get text variables
+    text_vars <- sapply(data, is.character)
+    text_count <- sum(text_vars)
+    cat(paste0("Text: ", text_count, "  \n"), file = output_file, append = TRUE)
+
+    # Get variable types
+    variable_types <- sapply(data, class)
+
+    # Create a data frame to hold the variable types
+    types <- data.frame(
+        Variable = names(variable_types),
+        Type = variable_types,
+        check.names = FALSE
+    )
+
+    write_to_table(data = types, output_file = output_file)
 }
 
 
@@ -94,3 +170,4 @@ write_statistics <- function(data, output_file = "profiler_report.md") {
     
     return(stats)
 }
+

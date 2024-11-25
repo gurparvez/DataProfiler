@@ -1,3 +1,5 @@
+library(ggplot2)
+
 .handle_numeric_variables <- function(column, output_file) {
     if (!is.vector(column)) {
         print("Error: column is not a vector")
@@ -11,6 +13,9 @@
         print("Error: .handle_numeric_variable : output_file is not a character")
         return(NULL)
     }
+
+    # Extract column name
+    col_name <- deparse(substitute(column))
 
     # Number of distinct values
     num_distinct_values <- length(unique(column))
@@ -86,6 +91,34 @@
         row.names = NULL
     )
 
-    write_table(data = formatted_data, output_file = output_file)
+    # Write the stats table to the markdown file
+    write_to_table(data = formatted_data, output_file = output_file)
 
+    # Plotting: Histogram and Boxplot
+    if (!dir.exists("plots")) {
+        dir.create("plots")
+    }
+
+    # 1. Generate Histogram
+    histogram_file <- paste0("plots/histogram_", col_name, ".png")
+    ggplot(data.frame(x = column), aes(x)) +
+        geom_histogram(binwidth = 1, fill = "skyblue", color = "black") +
+        labs(title = paste("Histogram of", col_name), x = col_name, y = "Frequency") +
+        theme_minimal() -> hist_plot
+    ggsave(histogram_file, plot = hist_plot, width = 6, height = 4)
+
+    # 2. Generate Boxplot
+    boxplot_file <- paste0("plots/boxplot_", col_name, ".png")
+    ggplot(data.frame(x = column), aes(y = x)) +
+        geom_boxplot(fill = "orange", color = "black") +
+        labs(title = paste("Boxplot of", col_name), y = col_name) +
+        theme_minimal() -> box_plot
+    ggsave(boxplot_file, plot = box_plot, width = 4, height = 6)
+
+    # 3. Write Markdown Links to the Images
+    cat("\n#### Histogram\n", file = output_file, append = TRUE)
+    cat("![Histogram](./", histogram_file, ")\n", sep = "", file = output_file, append = TRUE)
+
+    cat("\n#### Boxplot\n", file = output_file, append = TRUE)
+    cat("![Boxplot](./", boxplot_file, ")\n", sep = "", file = output_file, append = TRUE)
 }

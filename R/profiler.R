@@ -1,6 +1,6 @@
-source("R/overview/statistics.R")
-source("R/overview/variable_types.R")
-source("R/variables/variables.R")
+source("R/overview.R")
+source("R/variables.R")
+source("R/corr_plot.R")
 
 #' Profiler Function
 #'
@@ -22,7 +22,7 @@ source("R/variables/variables.R")
 #'
 #' # Example with a file path
 #' profiler("data/my_data.csv")
-#'
+#' 
 #' @export
 profiler <- function(data, output_file = "profiler_report.md", sep = ",") {
     if(is.data.frame(data)) {
@@ -33,6 +33,7 @@ profiler <- function(data, output_file = "profiler_report.md", sep = ",") {
         stop("Invalid input type")
     }
 }
+
 
 #' Read Data from File and Generate Profiler Report
 #'
@@ -87,7 +88,7 @@ profiler_file <- function(file_path, output_file = "profiler_report.md", sep = "
 #' # Example usage with a data frame
 #' df <- data.frame(a = 1:5, b = letters[1:5])
 #' profiler_dataframe(df)
-#'
+#' 
 #' @export
 profiler_dataframe <- function(data, output_file = "profiler_report.md") {
     stopifnot(is.data.frame(data))
@@ -106,7 +107,29 @@ profiler_dataframe <- function(data, output_file = "profiler_report.md") {
     # draw charts of all columns according to their data types
     # along with some statistics
     write_variables(data, output_file)
+
+    # Correlation plot:
+    cat("\n# Correlations\n", file = output_file, append = TRUE)
+    plot_correlation_heatmap(data, output_file)
 }
 
+test_data <- data.frame(
+    numeric_col = c(1, 2, 3, 4, 5, 6, 7, NA, Inf, 10),  # Numeric data
+    char_col = c("apple", "banana", "apple", NA, "orange", "banana", "orange", "apple", "apple", "banana"),  # Character data
+    factor_col = as.factor(c("male", "female", "female", "male", "male", NA, "female", "male", "female", "male")),  # Factor data
+    logical_col = c(TRUE, FALSE, TRUE, FALSE, NA, TRUE, FALSE, TRUE, NA, FALSE)  # Logical data
+)
+
+test_corr <- data.frame(
+    actual_price = c(249.82, 480.29, 392.80, 339.46, 162.41, 350.65, 510.10, 620.80, 230.45, 149.80),
+    discount_price = c(57.86, 209.10, 128.59, 177.14, 276.89, 150.99, 210.40, 100.25, 120.95, 69.85),
+    main_category = c("Books", "Books", "Home", "Electronics", "Books", "Electronics", "Home", "Books", "Books", "Electronics"),
+    no_of_ratings = c(191, 253, 469, 416, 471, 430, 510, 600, 430, 480),
+    ratings = c(3.13, 3.16, 3.55, 3.90, 4.90, 4.10, 3.95, 4.20, 3.65, 3.85)
+)
+
 # print(profiler("data.csv"))
-print(profiler(data.frame(a = 1:10, b = 11:20)))
+# profiler_output <- profiler(test_data)
+# profiler_output <- profiler(test_corr)
+profiler_output <- profiler(iris)
+print(profiler_output)
