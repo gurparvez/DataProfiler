@@ -54,13 +54,13 @@ write_variables <- function(data, output_file = "profiler_report.md") {
 
         if (is.numeric(column)) {
             print("Handling numeric variables")
-            .handle_numeric_variables(column, output_file)
+            .handle_numeric_variables(column, col_name, output_file)
         } else if (is.character(column)) {
-            .handle_character_variables(column, output_file)
+            .handle_character_variables(column, col_name, output_file)
         } else if (is.factor(column)) {
-            .handle_categorical_variables(column, output_file)
+            .handle_categorical_variables(column, col_name, output_file)
         } else if (is.logical(column)) {
-            .handle_logical_variables(column, output_file)
+            .handle_logical_variables(column, col_name, output_file)
         }
     }
 }

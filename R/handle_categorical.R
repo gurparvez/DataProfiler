@@ -1,6 +1,6 @@
 library(ggplot2)
 
-.handle_categorical_variables <- function(column, output_file) {
+.handle_categorical_variables <- function(column, column_name, output_file) {
     if (!is.factor(column)) {
         print("Error: column is not a factor")
         return(NULL)
@@ -10,7 +10,7 @@ library(ggplot2)
         return(NULL)
     }
 
-    col_name <- deparse(substitute(column))
+    col_name <- column_name
 
     # Number of distinct values (levels)
     num_distinct_values <- length(levels(column))
@@ -50,6 +50,7 @@ library(ggplot2)
 
     # 1. Generate Bar Plot
     barplot_file <- paste0("plots/barplot_", col_name, ".png")
+    paste0("saving ", barplot_file, " of ", col_name, " column...")
     ggplot(data.frame(x = column), aes(x = x)) +
         geom_bar(fill = "skyblue", color = "black") +
         labs(title = paste("Bar Plot of", col_name), x = col_name, y = "Count") +

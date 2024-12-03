@@ -130,6 +130,6 @@ test_corr <- data.frame(
 
 # print(profiler("data.csv"))
 # profiler_output <- profiler(test_data)
-# profiler_output <- profiler(test_corr)
-profiler_output <- profiler(iris)
+profiler_output <- profiler(test_corr)
+# profiler_output <- profiler(iris)
 print(profiler_output)

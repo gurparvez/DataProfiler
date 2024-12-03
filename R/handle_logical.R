@@ -1,6 +1,6 @@
 library(ggplot2)
 
-.handle_logical_variables <- function(column, output_file) {
+.handle_logical_variables <- function(column, column_name, output_file) {
     if (!is.logical(column)) {
         print("Error: column is not logical")
         return(NULL)
@@ -10,7 +10,7 @@ library(ggplot2)
         return(NULL)
     }
 
-    col_name <- deparse(substitute(column))
+    col_name <- column_name
 
     # Count True and False values
     true_count <- sum(column, na.rm = TRUE)
@@ -57,6 +57,7 @@ library(ggplot2)
 
     # 1. Generate Bar Plot
     barplot_file <- paste0("plots/barplot_", col_name, ".png")
+    paste0("saving ", barplot_file, " of ", col_name, " column...")
     ggplot(data.frame(x = column), aes(x = factor(x))) +
         geom_bar(fill = "lightcoral", color = "black") +
         labs(title = paste("Bar Plot of", col_name), x = col_name, y = "Count") +

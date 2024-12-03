@@ -42,19 +42,6 @@ write_statistics <- function(data, output_file = "profiler_report.md") {
     )
 
     write_to_table(data = formatted_data, output_file = output_file)
-    
-    # header <- "| Statistic                          | Value     |"
-    # separator <- "|------------------------------------|-----------|"
-
-    # rows <- c()
-    # for (i in seq_along(statistics)) {
-    #     statistic_name <- names(statistics)[i]
-    #     statistic_value <- statistics[i]
-    #     rows <- c(rows, paste0("| ", statistic_name, " | ", statistic_value, " |"))
-    # }
-
-    # table <- c(header, separator, rows)
-    # cat(table, file = output_file, sep = "\n", append = TRUE)
 }
 
 
@@ -94,9 +81,6 @@ write_statistics <- function(data, output_file = "profiler_report.md") {
 #' )
 #' write_variable_types(data, "my_report.md")
 #' }
-#' 
-#' @seealso 
-#' \code{\link{write_table}} for the underlying table writing functionality
 #' 
 #' @export
 write_variable_types <- function(data, output_file = "profiler_report.md") {

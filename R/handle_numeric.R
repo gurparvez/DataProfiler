@@ -1,6 +1,6 @@
 library(ggplot2)
 
-.handle_numeric_variables <- function(column, output_file) {
+.handle_numeric_variables <- function(column, column_name, output_file) {
     if (!is.vector(column)) {
         print("Error: column is not a vector")
         return(NULL)
@@ -15,7 +15,7 @@ library(ggplot2)
     }
 
     # Extract column name
-    col_name <- deparse(substitute(column))
+    col_name <- column_name
 
     # Number of distinct values
     num_distinct_values <- length(unique(column))
@@ -101,6 +101,7 @@ library(ggplot2)
 
     # 1. Generate Histogram
     histogram_file <- paste0("plots/histogram_", col_name, ".png")
+    print(paste("saving ", histogram_file, " of ", col_name, " column..."))
     ggplot(data.frame(x = column), aes(x)) +
         geom_histogram(binwidth = 1, fill = "skyblue", color = "black") +
         labs(title = paste("Histogram of", col_name), x = col_name, y = "Frequency") +
@@ -109,6 +110,7 @@ library(ggplot2)
 
     # 2. Generate Boxplot
     boxplot_file <- paste0("plots/boxplot_", col_name, ".png")
+    print(paste("saving ", boxplot_file, " of ", col_name, " column..."))
     ggplot(data.frame(x = column), aes(y = x)) +
         geom_boxplot(fill = "orange", color = "black") +
         labs(title = paste("Boxplot of", col_name), y = col_name) +
